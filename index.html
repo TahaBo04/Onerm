@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 Rep Max Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        p {
+            text-align: center;
+        }
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .output {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .output p {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>1 Rep Max Calculator</h1>
+    <p>This tool calculates your estimated 1 rep max (1RM), 2 rep max, and up to 9 rep max for exercises like squats, deadlifts, or bench press based on the number of reps and weight lifted.</p>
+
+    <form id="maxForm">
+        <label for="weight">Enter the weight lifted (in kg or lbs):</label>
+        <input type="number" id="weight" name="weight" required>
+
+        <label for="reps">Enter the number of reps performed:</label>
+        <input type="number" id="reps" name="reps" required>
+
+        <button type="button" onclick="calculateMaxes()">Calculate</button>
+    </form>
+
+    <div class="output" id="output"></div>
+
+    <script>
+        function calculateMaxes() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const reps = parseInt(document.getElementById('reps').value);
+
+            if (isNaN(weight) || isNaN(reps) || weight <= 0 || reps <= 0) {
+                alert('Please enter valid positive numbers for both fields.');
+                return;
+            }
+
+            const repMaxes = {};
+            for (let r = 1; r <= 9; r++) {
+                const maxWeight = weight * (1 + reps / 30) / (1 + (r - 1) / 30);
+                repMaxes[`${r}RM`] = maxWeight.toFixed(2);
+            }
+
+            let outputHTML = `<h2>Estimated Rep Maxes:</h2>`;
+            for (let r = 1; r <= 9; r++) {
+                outputHTML += `<p>${r}RM: ${repMaxes[`${r}RM`]} kg</p>`;
+            }
+
+            document.getElementById('output').innerHTML = outputHTML;
+        }
+    </script>
+</body>
+</html>
